@@ -1,0 +1,5 @@
+#!/bin/bash
+FILENAME=~/Screenshots/$(date +%Y-%m-%d_%H-%M-%S).png
+hyprshot -m region -o ~/Screenshots -f $(basename $FILENAME)
+wl-copy < $FILENAME
+satty --filename $FILENAME

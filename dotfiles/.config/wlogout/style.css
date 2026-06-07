@@ -1,0 +1,49 @@
+* {
+    font-family: "JetBrainsMono Nerd Font", "Fira Code Medium", monospace;
+    font-size: 18px;
+    font-weight: 600;
+    box-shadow: none;
+}
+
+window {
+    background-color: rgba(30, 30, 46, 0.5);
+}
+
+button {
+    background-color: transparent;
+    color: #cdd6f4;
+    border: none;
+    border-radius: 0;
+    background-repeat: no-repeat;
+    background-position: center 35%;
+    background-size: 30%;
+}
+
+button:focus,
+button:active,
+button:hover {
+    background-size: 40%;
+    outline-style: none;
+}
+
+#shutdown:hover  { color: #f38ba8; background-image: image(url("./icons/power-hover.png")) }
+#reboot:hover    { color: #fab387; background-image: image(url("./icons/restart-hover.png"))}
+#logout:hover    { color: #89b4fa; background-image: image(url("./icons/logout-hover.png"))}
+#hibernate:hover { color: #cba6f7; background-image: image(url("./icons/hibernate-hover.png"))}
+#lock:hover      { color: #a6e3a1; background-image: image(url("./icons/lock-hover.png"))}
+
+#shutdown {
+    background-image: image(url("./icons/power.png"));
+}
+#reboot {
+    background-image: image(url("./icons/restart.png"));
+}
+#logout {
+    background-image: image(url("./icons/logout.png"));
+}
+#hibernate {
+    background-image: image(url("./icons/hibernate.png"));
+}
+#lock {
+    background-image: image(url("./icons/lock.png"));
+}

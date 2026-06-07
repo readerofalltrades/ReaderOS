@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# ~/.config/hypr/scripts/wlogout.sh
+
+if [[ ! $(pidof wlogout) ]]; then
+    wlogout \
+        -b 5 \
+        --layout "$HOME/.config/wlogout/layout" \
+        --css "$HOME/.config/wlogout/style.css" \
+        --column-spacing 20 \
+        --row-spacing 20 \
+        --margin-top 400 \
+        --margin-bottom 400 \
+        --margin-left 150 \
+        --margin-right 150
+else
+    pkill wlogout
+fi

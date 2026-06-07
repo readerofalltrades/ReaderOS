@@ -1,0 +1,6 @@
+[Unit]
+Description=Google Drive Bisync
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/gdrive-sync

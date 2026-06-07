@@ -1,0 +1,40 @@
+#!/bin/bash
+
+BAT="/sys/class/power_supply/BAT1/capacity"
+STAT="/sys/class/power_supply/BAT1/status"
+STATEFILE="/tmp/battery-alert-last"
+
+capacity=$(cat "$BAT")
+status=$(cat "$STAT")
+
+last=""
+[ -f "$STATEFILE" ] && last=$(cat "$STATEFILE")
+
+notify_level () {
+    echo "$1" > "$STATEFILE"
+}
+
+# Low battery alerts
+if [ "$status" = "Discharging" ]; then
+    for level in 30 20 15 10 5; do
+        if [ "$capacity" -le "$level" ] && [ "$last" != "low-$level" ]; then
+            notify-send "Battery Low" "${capacity}% remaining"
+            notify_level "low-$level"
+            exit 0
+        fi
+    done
+fi
+
+# Charged alert
+if [ "$status" = "Charging" ] || [ "$status" = "Full" ]; then
+    if [ "$capacity" -ge 90 ] && [ "$last" != "high-90" ]; then
+        notify-send "Battery Charged" "Battery reached ${capacity}%"
+        notify_level "high-90"
+        exit 0
+    fi
+fi
+
+# Reset state if battery moves away from thresholds
+if [ "$capacity" -gt 30 ] && [ "$capacity" -lt 90 ]; then
+    echo "" > "$STATEFILE"
+fi

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+# Only run on WiFi
+INTERFACE=$(nmcli -t -f TYPE,STATE dev | grep "wifi:connected")
+if [ -z "$INTERFACE" ]; then
+    exit 0
+fi
+
+rclone bisync ~/Obsidian gdrive:Obsidian --drive-skip-shortcuts
+rclone bisync ~/Inbox gdrive:Inbox --drive-skip-shortcuts
+rclone bisync ~/Documents gdrive:Documents --drive-skip-shortcuts
+rclone bisync ~/Books gdrive:Books --drive-skip-shortcuts
+rclone bisync ~/Archives gdrive:Archives --drive-skip-shortcuts
+rclone bisync ~/Academics gdrive:Academics --drive-skip-shortcuts

@@ -1,0 +1,54 @@
+#!/bin/bash
+
+HWMON="/sys/class/hwmon/hwmon4/pwm1_enable"
+PIDFILE="/tmp/fan-max.pid"
+
+start() {
+    if [ -f "$PIDFILE" ] && kill -0 $(cat "$PIDFILE") 2>/dev/null; then
+        echo "Already running (PID $(cat $PIDFILE))"
+        exit 1
+    fi
+
+    echo "Starting max fan loop... (every 30s)"
+    (
+        while true; do
+            echo 0 | sudo tee "$HWMON" > /dev/null
+            sleep 30
+        done
+    ) &
+
+    echo $! > "$PIDFILE"
+    echo "Running in background (PID $!)"
+    echo "Stop with: fan-max stop"
+}
+
+stop() {
+    if [ ! -f "$PIDFILE" ]; then
+        echo "Not running"
+        exit 1
+    fi
+
+    kill $(cat "$PIDFILE") 2>/dev/null
+    rm -f "$PIDFILE"
+
+    echo 2 | sudo tee "$HWMON" > /dev/null
+    echo "Stopped. Fans back to automatic."
+}
+
+status() {
+    if [ -f "$PIDFILE" ] && kill -0 $(cat "$PIDFILE") 2>/dev/null; then
+        echo "Running (PID $(cat $PIDFILE))"
+    else
+        echo "Not running"
+    fi
+    sensors | grep -A3 hp-isa
+}
+
+case "$1" in
+    start)  start ;;
+    stop)   stop ;;
+    status) status ;;
+    *)
+        echo "Usage: fan-max [start|stop|status]"
+        ;;
+esac

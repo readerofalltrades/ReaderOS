@@ -1,0 +1,29 @@
+#!/bin/bash
+
+PROFILE_PATH="/sys/firmware/acpi/platform_profile"
+CHOICES_PATH="/sys/firmware/acpi/platform_profile_choices"
+
+get_icon() {
+    case "$1" in
+        performance) echo "🔥" ;;
+        balanced)    echo "⚡" ;;
+        low-power)   echo "🌿" ;;
+        *)           echo "?" ;;
+    esac
+}
+
+current=$(cat "$PROFILE_PATH")
+
+case "$1" in
+    get)
+        icon=$(get_icon "$current")
+        echo "$icon"
+        ;;
+    set)
+        chosen=$(cat "$CHOICES_PATH" | tr ' ' '\n' | wofi --dmenu --prompt "Power Mode")
+        [ -z "$chosen" ] && exit 0
+        echo "$chosen" | sudo tee "$PROFILE_PATH" > /dev/null
+        notify-send "Power Mode" "Switched to $chosen"
+        pkill -RTMIN+8 waybar  # signal waybar to refresh
+        ;;
+esac
