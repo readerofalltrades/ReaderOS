@@ -8,7 +8,7 @@ echo ":: Linking configs..."
 
 for dir in "$DOTFILES/.config"/*/; do
     name=$(basename "$dir")
-    ln -sf "$dir" "$CONFIG/$name"
+    ln -sf "${dir%/}" "$CONFIG/$name"
     echo "   linked $name"
 done
 
