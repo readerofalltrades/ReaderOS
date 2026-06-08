@@ -3,12 +3,40 @@
 # Only run on WiFi
 INTERFACE=$(nmcli -t -f TYPE,STATE dev | grep "wifi:connected")
 if [ -z "$INTERFACE" ]; then
+    echo "Not on WiFi, skipping sync."
     exit 0
 fi
 
-rclone bisync ~/Obsidian gdrive:Obsidian --drive-skip-shortcuts
-rclone bisync ~/Inbox gdrive:Inbox --drive-skip-shortcuts
-rclone bisync ~/Documents gdrive:Documents --drive-skip-shortcuts
-rclone bisync ~/Books gdrive:Books --drive-skip-shortcuts
-rclone bisync ~/Archives gdrive:Archives --drive-skip-shortcuts
-rclone bisync ~/Academics gdrive:Academics --drive-skip-shortcuts
+LOG_FILE="$HOME/.local/log/gdrive-sync.log"
+mkdir -p "$(dirname "$LOG_FILE")"
+
+log() {
+    echo "[$(date '+%H:%M:%S')] $1" | tee -a "$LOG_FILE"
+}
+
+sync_folder() {
+    local folder=$1
+    local extra_flags=$2
+    log "⟳ Syncing $folder..."
+    rclone bisync ~/$folder gdrive:$folder \
+        --drive-skip-shortcuts \
+        --progress \
+        --log-level INFO \
+        $extra_flags 2>&1 | tee -a "$LOG_FILE"
+
+    if [ ${PIPESTATUS[0]} -eq 0 ]; then
+        log "✓ $folder done"
+    else
+        log "✗ $folder failed — rerun with --resync if bisync aborted"
+    fi
+    echo "" | tee -a "$LOG_FILE"
+}
+
+log "=== gdrive-sync started ==="
+sync_folder "Obsidian"
+sync_folder "Inbox"
+sync_folder "Documents"
+sync_folder "Books"
+sync_folder "Archives"
+sync_folder "Academics"
+log "=== gdrive-sync complete ==="
