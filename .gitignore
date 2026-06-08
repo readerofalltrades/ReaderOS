@@ -1,6 +1,5 @@
-sddm/.config/sddm/themes/pixel-dusk-city/bg.mp4
-sddm/.config/sddm/themes/pixel-dusk-city/sunset-street-comet-rain.mp4
-scripts/.local/bin/prayerbar
 gtk/.config/gtk-3.0/bookmarks
 dotfiles/.config/zsh/plugins/
 dotfiles/.config/zsh/zsh
+dotfiles/.config/sddm/themes/pixel-dusk-city/
+dotfiles/.config/sddm/themes/field/
