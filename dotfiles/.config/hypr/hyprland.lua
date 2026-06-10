@@ -24,6 +24,9 @@ hl.monitor({
 --------------------
 
 hl.on("hyprland.start", function()
+    -- Keyring
+    -- h1.exe_cmd("/usr/bin/gnome-keyring-daemon --start --components=secrets")
+    
     -- Bar
     hl.exec_cmd("waybar")
 
