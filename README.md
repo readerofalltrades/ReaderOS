@@ -1,6 +1,6 @@
 # dotfiles
 
-Personal dotfiles for my CachyOS + Hyprland setup, managed with GNU Stow.
+Personal dotfiles for my CachyOS + Hyprland setup.
 
 ## System
 
@@ -38,7 +38,7 @@ Personal dotfiles for my CachyOS + Hyprland setup, managed with GNU Stow.
 | Terminal Emulator | Kitty |
 | Shell | Zsh |
 | Shell Prompt | Starship |
-| Text Editor | Neovim / VS Code |
+| Text Editor | Zed |
 | Browser | Zen Browser |
 | Image Viewer | Imv |
 | PDF Reader | Zathura |
@@ -59,7 +59,6 @@ Personal dotfiles for my CachyOS + Hyprland setup, managed with GNU Stow.
 
 - Clock and date
 - Workspaces
-- Prayer times via [prayerbar](https://github.com/Onizuka893/prayerbar) — built from source, not included in this repo
 - Power mode switcher (performance 🔥 / balanced ⚡ / low-power 🌿)
 - System tray
 
@@ -76,26 +75,6 @@ Located in `scripts/.local/bin/`:
 
 ## Structure
 
-Managed with [GNU Stow](https://www.gnu.org/software/stow/). Each folder is a stow package that mirrors the home directory structure.
-
-```
-Dotfiles/
-├── btop/
-├── gtk/
-├── hypr/
-├── kitty/
-├── mangohud/
-├── sddm/
-├── scripts/
-├── starship/
-├── waybar/
-├── wlogout/
-├── wofi/
-├── xdg/
-├── zathura/
-└── zsh/
-```
-
 ## Installation
 
 ### Dependencies
@@ -107,17 +86,9 @@ sudo pacman -S stow hyprland waybar wofi swaync hyprlock wlogout kitty zsh stars
     blueman brightnessctl pipewire pipewire-pulse wireplumber vesktop
 ```
 
-### Stow
-
-```bash
-git clone git@github.com:readeroaltrades/dotfiles.git ~/Dotfiles
-cd ~/Dotfiles
-stow hypr waybar kitty wofi wlogout starship btop sddm mangohud gtk zathura xdg zsh scripts
-```
-
 ### SDDM Theme
 
-The SDDM theme is stored in `sddm/.config/sddm/themes/pixel-dusk-city/`. After stowing, point SDDM to it:
+The SDDM theme is stored in `sddm/.config/sddm/themes/field/`. 
 
 `/etc/sddm.conf.d/theme.conf`:
 ```ini
@@ -130,17 +101,6 @@ Then fix permissions so SDDM (running as root) can read the theme:
 ```bash
 chmod 755 /home/YOUR_USERNAME
 chmod -R 755 ~/.config/sddm
-```
-
-### Prayerbar
-
-Prayerbar is a compiled Rust binary and is not included in this repo. Build it from source:
-
-```bash
-git clone https://github.com/Onizuka893/prayerbar.git
-cd prayerbar
-cargo build --release
-cp target/release/prayerbar ~/.local/bin/
 ```
 
 ### Manual System Configuration
