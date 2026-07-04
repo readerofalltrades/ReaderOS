@@ -24,33 +24,29 @@ hl.monitor({
 --------------------
 
 hl.on("hyprland.start", function()
+    -- Session target (handles portals, XDG, dbus automatically)
+    hl.exec_cmd("systemctl --user start hyprland-session.target")
     -- Bar
     hl.exec_cmd("waybar")
-
     -- Notification
     hl.exec_cmd("swaync")
-
-    -- Blutetooth
+    -- Bluetooth
     hl.exec_cmd("blueman-applet")
-
     -- Wallpaper
     hl.exec_cmd("awww-daemon")
     hl.exec_cmd("awww img ~/Wallpapers/wallpaper.png --transition-type none")
-
     -- Cursor theme for non-Wayland apps
     hl.exec_cmd("gsettings set org.gnome.desktop.interface cursor-theme 'Bibata-Modern-Classic'")
     hl.exec_cmd("gsettings set org.gnome.desktop.interface cursor-size 24")
-
-    -- Network Manager Waybar applet
+    -- Network Manager applet
     hl.exec_cmd("nm-applet --indicator")
-
     -- Clipboard Manager
     hl.exec_cmd("wl-paste --type text --watch cliphist store")
     hl.exec_cmd("wl-paste --type image --watch cliphist store")
+end)
 
-    -- Portal for Discord Screenshare
-    hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
-    hl.exec_cmd("systemctl --user import-environment WAYLAND_DISPLAY XDG_CURRENT_DESKTOP")
+hl.on("hyprland.shutdown", function()
+    os.execute("systemctl --user stop hyprland-session.target && sleep 0.1")
 end)
 
 ------------------------------
